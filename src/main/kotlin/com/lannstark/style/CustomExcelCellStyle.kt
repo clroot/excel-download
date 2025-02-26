@@ -1,21 +1,18 @@
-package com.lannstark.style;
+package com.lannstark.style
 
-import com.lannstark.style.configurer.ExcelCellStyleConfigurer;
-import org.apache.poi.ss.usermodel.CellStyle;
+import com.lannstark.style.configurer.ExcelCellStyleConfigurer
+import org.apache.poi.ss.usermodel.CellStyle
 
-public abstract class CustomExcelCellStyle implements ExcelCellStyle {
+abstract class CustomExcelCellStyle : ExcelCellStyle {
+    private val configurer = ExcelCellStyleConfigurer()
 
-	private ExcelCellStyleConfigurer configurer = new ExcelCellStyleConfigurer();
+    init {
+        configure(configurer)
+    }
 
-	public CustomExcelCellStyle() {
-		configure(configurer);
-	}
+    abstract fun configure(configurer: ExcelCellStyleConfigurer?)
 
-	public abstract void configure(ExcelCellStyleConfigurer configurer);
-
-	@Override
-	public void apply(CellStyle cellStyle) {
-		configurer.configure(cellStyle);
-	}
-
+    override fun apply(cellStyle: CellStyle) {
+        configurer.configure(cellStyle)
+    }
 }

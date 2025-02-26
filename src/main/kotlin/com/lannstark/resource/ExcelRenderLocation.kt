@@ -1,7 +1,6 @@
-package com.lannstark.resource;
+package com.lannstark.resource
 
-public enum ExcelRenderLocation {
-
-	HEADER, BODY
-
+enum class ExcelRenderLocation {
+    HEADER,
+    BODY,
 }

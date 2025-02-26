@@ -1,11 +1,5 @@
-package com.lannstark.exception;
+package com.lannstark.exception
 
-import com.lannstark.ExcelException;
+import com.lannstark.ExcelException
 
-public class InvalidExcelCellStyleException extends ExcelException {
-
-	public InvalidExcelCellStyleException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-}
+class InvalidExcelCellStyleException(message: String, cause: Throwable) : ExcelException(message, cause)

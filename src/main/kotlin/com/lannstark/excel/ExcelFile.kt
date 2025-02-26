@@ -1,13 +1,11 @@
-package com.lannstark.excel;
+package com.lannstark.excel
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
+import java.io.IOException
+import java.io.OutputStream
 
-public interface ExcelFile<T> {
+interface ExcelFile<T> {
+    @Throws(IOException::class)
+    fun write(stream: OutputStream)
 
-	void write(OutputStream stream) throws IOException;
-
-	void addRows(List<T> data);
-
+    fun addRows(data: List<T>)
 }

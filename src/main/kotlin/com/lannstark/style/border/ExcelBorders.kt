@@ -1,9 +1,7 @@
-package com.lannstark.style.border;
+package com.lannstark.style.border
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public interface ExcelBorders {
-
-	void apply(CellStyle cellStyle);
-
+interface ExcelBorders {
+    fun apply(cellStyle: CellStyle)
 }

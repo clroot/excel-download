@@ -1,9 +1,4 @@
-package com.lannstark;
+package com.lannstark
 
-public class ExcelException extends RuntimeException {
-
-	public ExcelException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-}
+open class ExcelException(message: String?, cause: Throwable?) :
+    RuntimeException(message, cause)

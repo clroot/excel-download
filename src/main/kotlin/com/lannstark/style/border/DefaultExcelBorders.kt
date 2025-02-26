@@ -1,38 +1,34 @@
-package com.lannstark.style.border;
+package com.lannstark.style.border
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-import java.util.ArrayList;
-import java.util.List;
+class DefaultExcelBorders(borders: List<ExcelBorder>) : ExcelBorders {
+    private val borders: List<ExcelBorder?>
 
-public final class DefaultExcelBorders implements ExcelBorders {
+    init {
+        validateBorders(borders)
+        this.borders = borders
+    }
 
-	private List<? extends ExcelBorder> borders;
+    private fun validateBorders(borders: List<ExcelBorder>) {
+        require(borders.size == 4) { "Should be initialized with TOP RIGHT LEFT BOTTOM borders" }
+    }
 
-	public DefaultExcelBorders(List<? extends ExcelBorder> borders) {
-		validateBorders(borders);
-		this.borders = borders;
-	}
+    override fun apply(cellStyle: CellStyle) {
+        borders[0]!!.applyTop(cellStyle)
+        borders[1]!!.applyRight(cellStyle)
+        borders[2]!!.applyBottom(cellStyle)
+        borders[3]!!.applyLeft(cellStyle)
+    }
 
-	public static DefaultExcelBorders newInstance(ExcelBorderStyle style) {
-		List<DefaultExcelBorder> excelBorders = new ArrayList<>();
-		for (int i = 0; i < 4; i++) {
-			excelBorders.add(new DefaultExcelBorder(style));
-		}
-		return new DefaultExcelBorders(excelBorders);
-	}
-
-	private void validateBorders(List<? extends ExcelBorder> borders) {
-		if (borders.size() != 4) {
-			throw new IllegalArgumentException("Should be initialized with TOP RIGHT LEFT BOTTOM borders");
-		}
-	}
-
-	public void apply(CellStyle cellStyle) {
-		borders.get(0).applyTop(cellStyle);
-		borders.get(1).applyRight(cellStyle);
-		borders.get(2).applyBottom(cellStyle);
-		borders.get(3).applyLeft(cellStyle);
-	}
-
+    companion object {
+        @JvmStatic
+        fun newInstance(style: ExcelBorderStyle): DefaultExcelBorders {
+            val excelBorders: MutableList<DefaultExcelBorder> = ArrayList()
+            for (i in 0..3) {
+                excelBorders.add(DefaultExcelBorder(style))
+            }
+            return DefaultExcelBorders(excelBorders)
+        }
+    }
 }

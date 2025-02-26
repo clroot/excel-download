@@ -1,15 +1,13 @@
-package com.lannstark.style.border;
+package com.lannstark.style.border
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public interface ExcelBorder {
+interface ExcelBorder {
+    fun applyTop(cellStyle: CellStyle)
 
-	void applyTop(CellStyle cellStyle);
+    fun applyRight(cellStyle: CellStyle)
 
-	void applyRight(CellStyle cellStyle);
+    fun applyBottom(cellStyle: CellStyle)
 
-	void applyBottom(CellStyle cellStyle);
-
-	void applyLeft(CellStyle cellStyle);
-
+    fun applyLeft(cellStyle: CellStyle)
 }

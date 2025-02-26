@@ -1,9 +1,7 @@
-package com.lannstark.style;
+package com.lannstark.style
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public interface ExcelCellStyle {
-
-	void apply(CellStyle cellStyle);
-
+interface ExcelCellStyle {
+    fun apply(cellStyle: CellStyle)
 }

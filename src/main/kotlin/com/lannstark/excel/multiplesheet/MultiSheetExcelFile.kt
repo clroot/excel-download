@@ -1,10 +1,9 @@
-package com.lannstark.excel.multiplesheet;
+package com.lannstark.excel.multiplesheet
 
-import com.lannstark.excel.SXSSFExcelFile;
-import com.lannstark.resource.DataFormatDecider;
-import org.apache.commons.compress.archivers.zip.Zip64Mode;
-
-import java.util.List;
+import com.lannstark.excel.SXSSFExcelFile
+import com.lannstark.resource.DataFormatDecider
+import com.lannstark.resource.DefaultDataFormatDecider
+import org.apache.commons.compress.archivers.zip.Zip64Mode
 
 /**
  * MultiSheetExcelFile
@@ -14,60 +13,48 @@ import java.util.List;
  * - support Dffierent DataFormat by Class Type
  * - support Custom CellStyle according to (header or body) and data field
  */
-public class MultiSheetExcelFile<T> extends SXSSFExcelFile<T> {
+class MultiSheetExcelFile<T : Any>(
+    data: List<T> = emptyList(),
+    type: Class<T>,
+    dataFormatDecider: DataFormatDecider = DefaultDataFormatDecider(),
+) : SXSSFExcelFile<T>(data, type, dataFormatDecider) {
+    private var currentRowIndex = ROW_START_INDEX
 
-	private static final int maxRowCanBeRendered = supplyExcelVersion.getMaxRows() - 1;
-	private static final int ROW_START_INDEX = 0;
-	private static final int COLUMN_START_INDEX = 0;
-	private int currentRowIndex = ROW_START_INDEX;
+    init {
+        wb.setZip64Mode(Zip64Mode.Always)
+    }
 
-	public MultiSheetExcelFile(Class<T> type) {
-		super(type);
-		wb.setZip64Mode(Zip64Mode.Always);
-	}
+    override fun renderExcel(data: List<T>) {
+        // 1. Create header and return if data is empty
+        if (data.isEmpty()) {
+            createNewSheetWithHeader()
+            return
+        }
 
-	/*
-	 * If you use SXSSF with hug data, you need to set zip mode
-	 * see http://apache-poi.1045710.n5.nabble.com/Bug-62872-New-Writing-large-files-with-800k-rows-gives-java-io-IOException-This-archive-contains-unc-td5732006.html
-	 */
-	public MultiSheetExcelFile(List<T> data, Class<T> type) {
-		super(data, type);
-		wb.setZip64Mode(Zip64Mode.Always);
-	}
+        // 2. Render body
+        createNewSheetWithHeader()
+        addRows(data)
+    }
 
-	public MultiSheetExcelFile(List<T> data, Class<T> type, DataFormatDecider dataFormatDecider) {
-		super(data, type, dataFormatDecider);
-		wb.setZip64Mode(Zip64Mode.Always);
-	}
+    override fun addRows(data: List<T>) {
+        for (renderedData in data) {
+            renderBody(renderedData, currentRowIndex++, COLUMN_START_INDEX)
+            if (currentRowIndex == maxRowCanBeRendered) {
+                currentRowIndex = 1
+                createNewSheetWithHeader()
+            }
+        }
+    }
 
-	@Override
-	protected void renderExcel(List<T> data) {
-		// 1. Create header and return if data is empty
-		if (data.isEmpty()) {
-			createNewSheetWithHeader();
-			return ;
-		}
+    private fun createNewSheetWithHeader() {
+        sheet = wb.createSheet()
+        renderHeadersWithNewSheet(sheet!!, ROW_START_INDEX, COLUMN_START_INDEX)
+        currentRowIndex++
+    }
 
-		// 2. Render body
-		createNewSheetWithHeader();
-		addRows(data);
-	}
-
-	@Override
-	public void addRows(List<T> data) {
-		for (Object renderedData : data) {
-			renderBody(renderedData, currentRowIndex++, COLUMN_START_INDEX);
-			if (currentRowIndex == maxRowCanBeRendered) {
-				currentRowIndex = 1;
-				createNewSheetWithHeader();
-			}
-		}
-	}
-
-	private void createNewSheetWithHeader() {
-		sheet = wb.createSheet();
-		renderHeadersWithNewSheet(sheet, ROW_START_INDEX, COLUMN_START_INDEX);
-		currentRowIndex++;
-	}
-
+    companion object {
+        private val maxRowCanBeRendered = supplyExcelVersion.maxRows - 1
+        private const val ROW_START_INDEX = 0
+        private const val COLUMN_START_INDEX = 0
+    }
 }

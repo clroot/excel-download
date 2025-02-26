@@ -1,34 +1,30 @@
-package com.lannstark.resource;
+package com.lannstark.resource
 
-import java.util.Objects;
+import java.util.*
 
-public final class ExcelCellKey {
+class ExcelCellKey private constructor(
+    private val dataFieldName: String,
+    private val excelRenderLocation: ExcelRenderLocation,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val that = other as ExcelCellKey
+        return dataFieldName == that.dataFieldName &&
+            excelRenderLocation == that.excelRenderLocation
+    }
 
-	private final String dataFieldName;
-	private final ExcelRenderLocation excelRenderLocation;
+    override fun hashCode(): Int {
+        return Objects.hash(dataFieldName, excelRenderLocation)
+    }
 
-	private ExcelCellKey(String dataFieldName, ExcelRenderLocation excelRenderLocation) {
-		this.dataFieldName = dataFieldName;
-		this.excelRenderLocation = excelRenderLocation;
-	}
-
-	public static ExcelCellKey of(String fieldName, ExcelRenderLocation excelRenderLocation) {
-		assert excelRenderLocation != null;
-		return new ExcelCellKey(fieldName, excelRenderLocation);
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		ExcelCellKey that = (ExcelCellKey) o;
-		return Objects.equals(dataFieldName, that.dataFieldName) &&
-				excelRenderLocation == that.excelRenderLocation;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(dataFieldName, excelRenderLocation);
-	}
-
+    companion object {
+        @JvmStatic
+        fun of(
+            fieldName: String,
+            excelRenderLocation: ExcelRenderLocation,
+        ): ExcelCellKey {
+            return ExcelCellKey(fieldName, excelRenderLocation)
+        }
+    }
 }

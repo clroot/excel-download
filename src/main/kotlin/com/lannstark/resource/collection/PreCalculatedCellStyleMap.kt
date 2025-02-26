@@ -1,14 +1,10 @@
-package com.lannstark.resource.collection;
+package com.lannstark.resource.collection
 
-import com.lannstark.resource.DataFormatDecider;
-import com.lannstark.resource.ExcelCellKey;
-import com.lannstark.style.ExcelCellStyle;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Workbook;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.lannstark.resource.DataFormatDecider
+import com.lannstark.resource.ExcelCellKey
+import com.lannstark.style.ExcelCellStyle
+import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.Workbook
 
 /**
  * PreCalculatedCellStyleMap
@@ -17,30 +13,26 @@ import java.util.Map;
  * In currently, PreCalculatedCellStyleMap determines {org.apache.poi.ss.usermodel.DataFormat}
  *
  */
-public class PreCalculatedCellStyleMap {
+class PreCalculatedCellStyleMap(private val dataFormatDecider: DataFormatDecider) {
+    private val cellStyleMap: MutableMap<ExcelCellKey, CellStyle> = HashMap()
 
-	private final DataFormatDecider dataFormatDecider;
+    fun put(
+        fieldType: Class<*>,
+        excelCellKey: ExcelCellKey,
+        excelCellStyle: ExcelCellStyle,
+        wb: Workbook,
+    ) {
+        val cellStyle = wb.createCellStyle()
+        val dataFormat = wb.createDataFormat()
+        cellStyle.dataFormat = dataFormatDecider.getDataFormat(dataFormat, fieldType)
+        excelCellStyle.apply(cellStyle)
+        cellStyleMap[excelCellKey] = cellStyle
+    }
 
-	public PreCalculatedCellStyleMap(DataFormatDecider dataFormatDecider) {
-		this.dataFormatDecider = dataFormatDecider;
-	}
+    operator fun get(excelCellKey: ExcelCellKey): CellStyle {
+        return cellStyleMap[excelCellKey] ?: throw IllegalStateException("No style found for $excelCellKey")
+    }
 
-	private final Map<ExcelCellKey, CellStyle> cellStyleMap = new HashMap<>();
-
-	public void put(Class<?> fieldType, ExcelCellKey excelCellKey, ExcelCellStyle excelCellStyle, Workbook wb) {
-		CellStyle cellStyle = wb.createCellStyle();
-		DataFormat dataFormat = wb.createDataFormat();
-		cellStyle.setDataFormat(dataFormatDecider.getDataFormat(dataFormat, fieldType));
-		excelCellStyle.apply(cellStyle);
-		cellStyleMap.put(excelCellKey, cellStyle);
-	}
-
-	public CellStyle get(ExcelCellKey excelCellKey) {
-		return cellStyleMap.get(excelCellKey);
-	}
-
-	public boolean isEmpty() {
-		return cellStyleMap.isEmpty();
-	}
-
+    val isEmpty: Boolean
+        get() = cellStyleMap.isEmpty()
 }

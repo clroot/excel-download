@@ -1,12 +1,9 @@
-package com.lannstark.style;
+package com.lannstark.style
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public class NoExcelCellStyle implements ExcelCellStyle {
-
-	@Override
-	public void apply(CellStyle cellStyle) {
-		// Do nothing
-	}
-
+class NoExcelCellStyle : ExcelCellStyle {
+    override fun apply(cellStyle: CellStyle) {
+        // Do nothing
+    }
 }

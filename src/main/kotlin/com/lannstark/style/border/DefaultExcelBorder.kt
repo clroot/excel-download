@@ -1,33 +1,21 @@
-package com.lannstark.style.border;
+package com.lannstark.style.border
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public final class DefaultExcelBorder implements ExcelBorder {
+class DefaultExcelBorder(private val borderStyle: ExcelBorderStyle) : ExcelBorder {
+    override fun applyTop(cellStyle: CellStyle) {
+        cellStyle.borderTop = borderStyle.style
+    }
 
-	private ExcelBorderStyle borderStyle;
+    override fun applyRight(cellStyle: CellStyle) {
+        cellStyle.borderRight = borderStyle.style
+    }
 
-	public DefaultExcelBorder(ExcelBorderStyle borderStyle) {
-		this.borderStyle = borderStyle;
-	}
+    override fun applyBottom(cellStyle: CellStyle) {
+        cellStyle.borderBottom = borderStyle.style
+    }
 
-	@Override
-	public void applyTop(CellStyle cellStyle) {
-		cellStyle.setBorderTop(borderStyle.getStyle());
-	}
-
-	@Override
-	public void applyRight(CellStyle cellStyle) {
-		cellStyle.setBorderRight(borderStyle.getStyle());
-	}
-
-	@Override
-	public void applyBottom(CellStyle cellStyle) {
-		cellStyle.setBorderBottom(borderStyle.getStyle());
-	}
-
-	@Override
-	public void applyLeft(CellStyle cellStyle) {
-		cellStyle.setBorderLeft(borderStyle.getStyle());
-	}
-
+    override fun applyLeft(cellStyle: CellStyle) {
+        cellStyle.borderLeft = borderStyle.style
+    }
 }

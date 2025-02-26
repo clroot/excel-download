@@ -1,11 +1,5 @@
-package com.lannstark.exception;
+package com.lannstark.exception
 
-import com.lannstark.ExcelException;
+import com.lannstark.ExcelException
 
-public class ExcelInternalException extends ExcelException {
-
-	public ExcelInternalException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-}
+class ExcelInternalException(message: String, cause: Throwable) : ExcelException(message, cause)

@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -93,16 +94,19 @@ public final class ExcelRenderResourceFactory {
 
 		// 2. Case of Class
 		try {
-			return excelCellStyleClass.newInstance();
+			return excelCellStyleClass.getConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new InvalidExcelCellStyleException(e.getMessage(), e);
-		}
-	}
+		} catch (InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	@SuppressWarnings("unchecked")
 	private static ExcelCellStyle findExcelCellStyle(Class<?> excelCellStyles, String enumName) {
 		try {
-			return (ExcelCellStyle) Enum.valueOf((Class<Enum>) excelCellStyles, enumName);
+            //noinspection rawtypes
+            return (ExcelCellStyle) Enum.valueOf((Class<Enum>) excelCellStyles, enumName);
 		} catch (NullPointerException e) {
 			throw new InvalidExcelCellStyleException("enumName must not be null", e);
 		} catch (IllegalArgumentException e) {

@@ -1,9 +1,7 @@
-package com.lannstark.style.align;
+package com.lannstark.style.align
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public interface ExcelAlign {
-
-	void apply(CellStyle cellStyle);
-
+interface ExcelAlign {
+    fun apply(cellStyle: CellStyle)
 }

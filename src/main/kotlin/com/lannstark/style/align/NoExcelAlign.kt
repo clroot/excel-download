@@ -1,12 +1,9 @@
-package com.lannstark.style.align;
+package com.lannstark.style.align
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public class NoExcelAlign implements ExcelAlign {
-
-	@Override
-	public void apply(CellStyle cellStyle) {
-		// Do nothing
-	}
-
+class NoExcelAlign : ExcelAlign {
+    override fun apply(cellStyle: CellStyle) {
+        // Do nothing
+    }
 }

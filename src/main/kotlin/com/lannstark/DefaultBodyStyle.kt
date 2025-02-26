@@ -1,14 +1,5 @@
-package com.lannstark;
+package com.lannstark
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface DefaultBodyStyle {
-
-	ExcelColumnStyle style();
-
-}
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class DefaultBodyStyle(val style: ExcelColumnStyle)

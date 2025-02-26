@@ -1,12 +1,9 @@
-package com.lannstark.style.color;
+package com.lannstark.style.color
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public class NoExcelColor implements ExcelColor {
-
-	@Override
-	public void applyForeground(CellStyle cellStyle) {
-		// Do nothing
-	}
-
+class NoExcelColor : ExcelColor {
+    override fun applyForeground(cellStyle: CellStyle) {
+        // Do nothing
+    }
 }

@@ -1,44 +1,51 @@
-package com.lannstark.resource;
+package com.lannstark.resource
 
-import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.DataFormat
 
-import java.util.Arrays;
-import java.util.List;
+class DefaultDataFormatDecider : DataFormatDecider {
+    override fun getDataFormat(
+        dataFormat: DataFormat,
+        type: Class<*>,
+    ): Short {
+        if (isFloatType(type)) {
+            return dataFormat.getFormat(FLOAT_FORMAT_2_DECIMAL_PLACES)
+        }
 
-public class DefaultDataFormatDecider implements DataFormatDecider {
+        if (isIntegerType(type)) {
+            return dataFormat.getFormat(CURRENT_FORMAT)
+        }
+        return dataFormat.getFormat(DEFAULT_FORMAT)
+    }
 
-	private static final String CURRENT_FORMAT = "#,##0";
-	private static final String FLOAT_FORMAT_2_DECIMAL_PLACES = "#,##0.00";
-	private static final String DEFAULT_FORMAT = "";
+    private fun isFloatType(type: Class<*>): Boolean {
+        val floatTypes =
+            listOf<Class<*>>(
+                Float::class.java,
+                Float::class.javaPrimitiveType!!,
+                Double::class.java,
+                Double::class.javaPrimitiveType!!,
+            )
+        return floatTypes.contains(type)
+    }
 
-	@Override
-	public short getDataFormat(DataFormat dataFormat, Class<?> type) {
-		if (isFloatType(type)) {
-			return dataFormat.getFormat(FLOAT_FORMAT_2_DECIMAL_PLACES);
-		}
+    private fun isIntegerType(type: Class<*>): Boolean {
+        val integerTypes =
+            listOf<Class<*>>(
+                Byte::class.java,
+                Byte::class.javaPrimitiveType!!,
+                Short::class.java,
+                Short::class.javaPrimitiveType!!,
+                Int::class.java,
+                Int::class.javaPrimitiveType!!,
+                Long::class.java,
+                Long::class.javaPrimitiveType!!,
+            )
+        return integerTypes.contains(type)
+    }
 
-		if (isIntegerType(type)) {
-			return dataFormat.getFormat(CURRENT_FORMAT);
-		}
-		return dataFormat.getFormat(DEFAULT_FORMAT);
-	}
-
-	private boolean isFloatType(Class<?> type) {
-		List<Class<?>> floatTypes = Arrays.asList(
-				Float.class, float.class,
-				Double.class, double.class
-		);
-		return floatTypes.contains(type);
-	}
-
-	private boolean isIntegerType(Class<?> type) {
-		List<Class<?>> integerTypes = Arrays.asList(
-				Byte.class, byte.class,
-				Short.class, short.class,
-				Integer.class, int.class,
-				Long.class, long.class
-		);
-		return integerTypes.contains(type);
-	}
-
+    companion object {
+        private const val CURRENT_FORMAT = "#,##0"
+        private const val FLOAT_FORMAT_2_DECIMAL_PLACES = "#,##0.00"
+        private const val DEFAULT_FORMAT = ""
+    }
 }

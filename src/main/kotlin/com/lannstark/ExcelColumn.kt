@@ -1,19 +1,11 @@
-package com.lannstark;
+package com.lannstark
 
-import com.lannstark.style.NoExcelCellStyle;
+import com.lannstark.style.NoExcelCellStyle
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ExcelColumn {
-
-	String headerName() default "";
-
-	ExcelColumnStyle headerStyle() default @ExcelColumnStyle(excelCellStyleClass = NoExcelCellStyle.class);
-	ExcelColumnStyle bodyStyle() default @ExcelColumnStyle(excelCellStyleClass = NoExcelCellStyle.class);
-
-}
+@Target(AnnotationTarget.FIELD)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ExcelColumn(
+    val headerName: String = "",
+    val headerStyle: ExcelColumnStyle = ExcelColumnStyle(excelCellStyleClass = NoExcelCellStyle::class),
+    val bodyStyle: ExcelColumnStyle = ExcelColumnStyle(excelCellStyleClass = NoExcelCellStyle::class),
+)

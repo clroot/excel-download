@@ -1,12 +1,9 @@
-package com.lannstark.style.border;
+package com.lannstark.style.border
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellStyle
 
-public final class NoExcelBorders implements ExcelBorders {
-
-	@Override
-	public void apply(CellStyle cellStyle) {
-		// Do nothing
-	}
-
+class NoExcelBorders : ExcelBorders {
+    override fun apply(cellStyle: CellStyle) {
+        // Do nothing
+    }
 }

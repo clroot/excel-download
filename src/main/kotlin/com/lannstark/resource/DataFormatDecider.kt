@@ -1,9 +1,10 @@
-package com.lannstark.resource;
+package com.lannstark.resource
 
-import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.DataFormat
 
-public interface DataFormatDecider {
-
-	short getDataFormat(DataFormat dataFormat, Class<?> type);
-
+interface DataFormatDecider {
+    fun getDataFormat(
+        dataFormat: DataFormat,
+        type: Class<*>,
+    ): Short
 }
