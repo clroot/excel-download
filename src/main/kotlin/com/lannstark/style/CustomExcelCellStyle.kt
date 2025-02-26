@@ -10,7 +10,7 @@ abstract class CustomExcelCellStyle : ExcelCellStyle {
         configure(configurer)
     }
 
-    abstract fun configure(configurer: ExcelCellStyleConfigurer?)
+    abstract fun configure(configurer: ExcelCellStyleConfigurer)
 
     override fun apply(cellStyle: CellStyle) {
         configurer.configure(cellStyle)
